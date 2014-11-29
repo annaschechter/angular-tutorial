@@ -24,6 +24,7 @@ describe('PhoneCat App', function() {
       expect(phoneList.count()).toBe(2);
     });
 
+
     it('should display the current filter value in the title bar', function() {
       query.clear();
       expect(browser.getTitle()).toMatch(/Anna's Phone Store:$/);
@@ -31,5 +32,33 @@ describe('PhoneCat App', function() {
       query.sendKeys('nexus');
       expect(browser.getTitle()).toMatch(/Anna's Phone Store: nexus$/);
     });
+
+
+		it('should be possible to control phone order via the drop down select box', function() {
+
+		  var phoneNameColumn = element.all(by.repeater('phone in phones').column('phone.name'));
+		  var query = element(by.model('query'));
+
+		  function getNames() {
+		    return phoneNameColumn.map(function(elm) {
+		      return elm.getText();
+		    });
+		  }
+
+		  query.sendKeys('tablet'); //let's narrow the dataset to make the test assertions shorter
+
+		  expect(getNames()).toEqual([
+		    "Motorola XOOM\u2122 with Wi-Fi\nThe Next, Next Generation tablet.",
+		    "MOTOROLA XOOM\u2122\nThe Next, Next Generation tablet."
+		  ]);
+
+		  element(by.model('orderProp')).element(by.css('option[value="name"]')).click();
+
+		  expect(getNames()).toEqual([
+		    "MOTOROLA XOOM\u2122\nThe Next, Next Generation tablet.",
+		    "Motorola XOOM\u2122 with Wi-Fi\nThe Next, Next Generation tablet."
+		  ]);
+		});
   });
 });
+

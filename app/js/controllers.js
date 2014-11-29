@@ -4,6 +4,7 @@ var phonecatApp = angular.module('phonecatApp', []);
 
 phonecatApp.controller('PhoneListCtrl', function ($scope) {
   $scope.name = "Anna's";
+  $scope.orderProp = 'age';
   $scope.phones = [
     {'name': 'Nexus S',
      'snippet': 'Fast just got faster with Nexus S.'},
